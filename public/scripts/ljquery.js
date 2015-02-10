@@ -12,7 +12,18 @@ $(document).ready(function(){
     var map_canvas_obj = document.getElementById("map-canvas");
     // initialize a new Google Map with the options
     var map = new google.maps.Map(map_canvas_obj, mapOptions);
-    var totalArrs = [], oneMarker;
+    var totalArrs = [], oneMarker, arrPos;
+
+	$("#addDay").click(function(){
+		var nDay = $(event.target).prev().text();
+		$("#addDay").before('<button class="btn btn-circle day-btn">'+(++nDay)+'</button> ');
+	});
+
+	$(".day-buttons").on("click", ".day-btn", function(event){
+		$(".current-day").toggleClass("current-day");
+		$(event.target).toggleClass("current-day");
+	});
+
 
 	$("#hotelBtn").click(function(){
 		var hotel = $("#selHotel option:selected").text();
@@ -40,8 +51,10 @@ $(document).ready(function(){
 		var item = $(event.target).parent().text();
 		item = item.substr(0, item.length - 1);
 		oneMarker = getObject(totalArrs, item);
+		arrPos = totalArrs.indexOf(oneMarker);
 		oneMarker.setMap(null);
-		$(event.target).parent().parent().remove();
+		totalArrs.splice(1, arrPos);
+		$(event.target).parent().remove();
 	});
 
 	//Every time create new iterary item, add itinerary-item, title, button
